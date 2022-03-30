@@ -8,5 +8,5 @@ _Das Modul „SyncMySQL“ wurde in Kooperation mit der Hochschule Biberach (Ins
 
 Folgende Module beinhaltet das SyncMySQL Repository:
 
-- __Sync MySQL__ ([Dokumentation](Sync%20MySQL))  
+- __Sync MySQL__ ([Dokumentation](SyncMySQL))  
 	Syncronisiert eine Datenbank mit ausgewählten Variablen.
