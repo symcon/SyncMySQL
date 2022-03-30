@@ -1,0 +1,14 @@
+{
+    "id": "{7E122824-E4D6-4FF8-8AA1-2B7BB36D5EC9}",
+    "name": "Sync MySQL",
+    "type": 4,
+    "vendor": "",
+    "aliases": [
+        "Synchronize to MySQL"
+    ],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "SSQL",
+    "url": "https://github.com/symcon/syncmysql"
+}

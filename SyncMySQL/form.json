@@ -1,0 +1,567 @@
+{
+    "elements": [
+        {
+            "type": "Label",
+            "caption": "",
+            "visible": false,
+            "name": "DatabaseStatus"
+        },
+        {
+            "type": "ExpansionPanel",
+            "caption": "Database configuration",
+            "items": [
+                {
+                    "name": "Active",
+                    "type": "CheckBox",
+                    "caption": "Active"
+                },
+                {
+                    "name": "SSL",
+                    "type": "CheckBox",
+                    "caption": "SSL"
+                },
+                {
+                    "name": "SSLDontVerify",
+                    "type": "CheckBox",
+                    "caption": "Don't Verify Certificate"
+                },
+                {
+                    "name": "Host",
+                    "type": "ValidationTextBox",
+                    "caption": "Host"
+                },
+                {
+                    "name": "Port",
+                    "type": "NumberSpinner",
+                    "caption": "Port"
+                },
+                {
+                    "name": "Username",
+                    "type": "ValidationTextBox",
+                    "caption": "Username"
+                },
+                {
+                    "name": "Password",
+                    "type": "PasswordTextBox",
+                    "caption": "Password"
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {
+                            "name": "Database",
+                            "type": "ValidationTextBox",
+                            "caption": "Database"
+                        },
+                        {
+                            "type": "Label"
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Create Database",
+                            "onClick": "SSQL_CreateDatabase($id);"
+                        }
+                    ]
+                },
+                {
+                    "type": "RowLayout",
+                    "items": [
+                        {
+                            "name": "Interval",
+                            "type": "NumberSpinner",
+                            "caption": "Interval",
+                            "suffix": "seconds"
+                        },
+                        {
+                            "type": "Label"
+                        },
+                        {
+                            "type": "Button",
+                            "caption": "Sync now",
+                            "onClick": "SSQL_Sync($id);"
+                        }
+                    ]
+                },
+                {
+                    "type": "Label",
+                    "caption": "Format cannot be changed if datapoints were added to the database",
+                    "visible": false
+                },
+                {
+                    "name": "Format",
+                    "type": "Select",
+                    "caption": "Format",
+                    "options": [
+                        {
+                            "label": "ABC-P000=000000+G000-00R0/MW-_-_-_-_-_-_-_",
+                            "value": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "List",
+            "name": "IdentList",
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "Ident",
+                "direction": "ascending"
+            },
+            "onAdd": "SSQL_IdentAdd($id, $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description']);",
+            "onEdit": "SSQL_IdentUpdate($id, $IdentList['IdentID'], $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description']);",
+            "onDelete": "SSQL_IdentDelete($id, $IdentList['IdentID']);",
+            "columns": [
+                {
+                    "caption": "ID",
+                    "name": "IdentID",
+                    "width": "40px",
+                    "add": 0
+                },
+                {
+                    "caption": "Active",
+                    "name": "Active",
+                    "width": "50px",
+                    "add": true,
+                    "edit": {
+                        "type": "CheckBox"
+                    }
+                },
+                {
+                    "caption": "Identification",
+                    "name": "Ident",
+                    "width": "400px",
+                    "add": "",
+                    "edit": {
+                        "type": "ValidationTextBox"
+                    }
+                },
+                {
+                    "caption": "Aggregation Type",
+                    "name": "AggregationType",
+                    "width": "140px",
+                    "add": 0,
+                    "edit": {
+                        "type": "Select",
+                        "options": [
+                            {
+                                "caption": "Average",
+                                "value": 0
+                            },
+                            {
+                                "caption": "Counter",
+                                "value": 1
+                            }
+                        ]
+                    }
+                },
+                {
+                    "caption": "VariableID",
+                    "name": "VariableID",
+                    "width": "auto",
+                    "add": 0,
+                    "edit": {
+                        "type": "SelectVariable"
+                    }
+                },
+                {
+                    "caption": "Unit",
+                    "name": "Unit",
+                    "width": "70px",
+                    "add": "",
+                    "edit": {
+                        "type": "Select",
+                        "options": [
+                            {
+                                "caption": "None",
+                                "value": ""
+                            },
+                            {
+                                "caption": "°C",
+                                "value": "°C"
+                            },
+                            {
+                                "caption": "kWh",
+                                "value": "kWh"
+                            },
+                            {
+                                "caption": "Wh",
+                                "value": "MWh"
+                            },
+                            {
+                                "caption": "W",
+                                "value": "W"
+                            },
+                            {
+                                "caption": "kW",
+                                "value": "kW"
+                            },
+                            {
+                                "caption": "A",
+                                "value": "A"
+                            },
+                            {
+                                "caption": "V",
+                                "value": "V"
+                            },
+                            {
+                                "caption": "°",
+                                "value": "°"
+                            },
+                            {
+                                "caption": "%rf",
+                                "value": "%rf"
+                            },
+                            {
+                                "caption": "m³",
+                                "value": "m³"
+                            },
+                            {
+                                "caption": "m³/h",
+                                "value": "m³/h"
+                            },
+                            {
+                                "caption": "g/m³",
+                                "value": "g/m³"
+                            },
+                            {
+                                "caption": "mbar",
+                                "value": "mbar"
+                            },
+                            {
+                                "caption": "km/h",
+                                "value": "km/h"
+                            },
+                            {
+                                "caption": "m/s",
+                                "value": "m/s"
+                            },
+                            {
+                                "caption": "mm",
+                                "value": "mm"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "caption": "Meter",
+                    "name": "MeterID",
+                    "width": "100px",
+                    "add": -1,
+                    "edit": {
+                        "type": "Select",
+                        "options": [
+                            {
+                                "caption": "(none)",
+                                "value": -1
+                            }
+                        ]
+                    }
+                },
+                {
+                    "caption": "Tariff",
+                    "name": "Tariff",
+                    "width": "200px",
+                    "add": "",
+                    "edit": {
+                        "type": "ValidationTextBox",
+                        "validate": "^.{0,100}$"
+                    }
+                },
+                {
+                    "caption": "Zone",
+                    "name": "ZoneID",
+                    "width": "100px",
+                    "add": -1,
+                    "edit": {
+                        "type": "Select",
+                        "options": [
+                            {
+                                "caption": "(none)",
+                                "value": -1
+                            }
+                        ]
+                    }
+                },
+                {
+                    "caption": "Usage Type",
+                    "name": "UsageType",
+                    "width": "200px",
+                    "visible": false,
+                    "add": "",
+                    "edit": {
+                        "type": "ValidationTextBox",
+                        "validate": "^.{0,100}$"
+                    }
+                },
+                {
+                    "caption": "Description",
+                    "name": "Description",
+                    "width": "200px",
+                    "visible": false,
+                    "add": "",
+                    "edit": {
+                        "type": "ValidationTextBox",
+                        "multiline": true,
+                        "width": "600px"
+                    }
+                },
+                {
+                    "caption": "State",
+                    "name": "State",
+                    "width": "60px",
+                    "add": "New!"
+                }
+            ],
+            "values": []
+        },
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "PopupButton",
+                    "name": "EditMeter",
+                    "caption": "Edit Meter",
+                    "popup": {
+                        "caption": "Edit Meter",
+                        "items": [
+                            {
+                                "type": "ExpansionPanel",
+                                "caption": "Create Meter",
+                                "items": [
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewMeterNumber",
+                                        "caption": "Meter Number",
+                                        "validate": "^[a-zA-Z0-9_]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewMeterBKS",
+                                        "caption": "BKS"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewMeterDescription",
+                                        "caption": "Description"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "caption": "Create New",
+                                        "onClick": "SSQL_AddMeter($id, $NewMeterNumber, $NewMeterBKS, $NewMeterDescription);"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "ExpansionPanel",
+                                "caption": "Replace Meter",
+                                "items": [
+                                    {
+                                        "type": "Select",
+                                        "name": "EditMeter",
+                                        "caption": "Select Meter",
+                                        "onChange": "SSQL_LoadMeterInfo($id, $EditMeter);",
+                                        "options": []
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "ReplaceMeterNumber",
+                                        "caption": "New Meter Number",
+                                        "validate": "^[a-zA-Z0-9_]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "ReplaceMeterBKS",
+                                        "caption": "BKS"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "ReplaceMeterDescription",
+                                        "caption": "Description"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "caption": "Replace",
+                                        "onClick": "SSQL_ReplaceMeter($id, $EditMeter, $ReplaceMeterNumber, $ReplaceMeterBKS, $ReplaceMeterDescription);"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "ExpansionPanel",
+                                "caption": "Meter History",
+                                "items": [
+                                    {
+                                        "type": "Select",
+                                        "caption": "Select Meter",
+                                        "name": "HistoryMeter",
+                                        "onChange": "SSQL_LoadMeterHistory($id, $HistoryMeter);",
+                                        "options": []
+                                    },
+                                    {
+                                        "type": "List",
+                                        "name": "MeterHistory",
+                                        "columns": [
+                                            {
+                                                "caption": "Since",
+                                                "name": "Timestamp",
+                                                "width": "250px"
+                                            },
+                                            {
+                                                "caption": "Meter Number",
+                                                "name": "MeterNumber",
+                                                "width": "auto"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "PopupButton",
+                    "name": "Zone",
+                    "caption": "Edit Zone",
+                    "popup": {
+                        "caption": "Edit Zone",
+                        "items": [
+                            {
+                                "type": "ExpansionPanel",
+                                "caption": "Create Zone",
+                                "items": [
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewLocation",
+                                        "caption": "Location",
+                                        "validate": "^[a-zA-Z0-9_]+$"
+                                    },
+                                    {
+                                        "type": "NumberSpinner",
+                                        "name": "NewArea",
+                                        "caption": "Usage Area",
+                                        "suffix": "m²"
+                                    },
+                                    {
+                                        "type": "NumberSpinner",
+                                        "name": "NewNetArea",
+                                        "caption": "Net Area",
+                                        "suffix": "m²"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewEconomicUnit",
+                                        "caption": "Economic Unit",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewBuildingUnit",
+                                        "caption": "Building Unit",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewBuildingAssignment",
+                                        "caption": "Building Assignment",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewConstructionDate",
+                                        "caption": "Construction Date (YYYY)",
+                                        "validate": "^[0-9]{4}$"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "caption": "Create New",
+                                        "onClick": "SSQL_CreateZone($id, $NewLocation, $NewArea, $NewNetArea, $NewEconomicUnit, $NewBuildingUnit, $NewBuildingAssignment, $NewConstructionDate);"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "ExpansionPanel",
+                                "caption": "Edit Zone",
+                                "items": [
+                                    {
+                                        "type": "Select",
+                                        "caption": "Select Zone",
+                                        "name": "EditZone",
+                                        "onChange": "SSQL_LoadZoneInfo($id, $EditZone);",
+                                        "options": []
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "EditLocation",
+                                        "caption": "Location",
+                                        "validate": "^[a-zA-Z0-9_]+$"
+                                    },
+                                    {
+                                        "type": "NumberSpinner",
+                                        "name": "EditArea",
+                                        "caption": "Usage Area",
+                                        "suffix": "m²"
+                                    },
+                                    {
+                                        "type": "NumberSpinner",
+                                        "name": "EditNetArea",
+                                        "caption": "Net Area",
+                                        "suffix": "m²"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "EditEconomicUnit",
+                                        "caption": "Economic Unit",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "EditBuildingUnit",
+                                        "caption": "Building Unit",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "EditBuildingAssignment",
+                                        "caption": "Building Assignment",
+                                        "validate": "^[0-9]+$"
+                                    },
+                                    {
+                                        "type": "ValidationTextBox",
+                                        "name": "EditConstructionDate",
+                                        "caption": "Construction Date (YYYY)",
+                                        "validate": "^[0-9]{4}$"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "caption": "Save",
+                                        "onClick": "SSQL_EditZone($id, $EditZone, $EditLocation, $EditArea, $EditNetArea, $EditEconomicUnit, $EditBuildingUnit, $EditBuildingAssignment, $EditConstructionDate);"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "status": [
+        {
+            "code": 102,
+            "icon": "active",
+            "caption": "Database is active and properly configured"
+        },
+        {
+            "code": 104,
+            "icon": "inactive",
+            "caption": "Database connection is inactive"
+        },
+        {
+            "code": 200,
+            "icon": "error",
+            "caption": "An error occurred. Please check the error message below."
+        }
+    ]
+}
