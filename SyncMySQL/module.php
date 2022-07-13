@@ -391,7 +391,7 @@ class SyncMySQL extends IPSModule
     public function CreateDatabase()
     {
         $this->dbCreateDatabase($this->dbConnect(true), $this->ReadPropertyString('Database'));
-        $this->ReloadForm();
+        $this->ApplyChanges();
     }
 
     public function GetIdentList()
