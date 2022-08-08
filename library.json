@@ -1,7 +1,7 @@
 {
     "id": "{5F99353C-499B-8910-CF8A-1D9220B61085}",
     "name": "SyncMySQL",
-    "author": "Symcon GmbH",
+    "author": "Hochschule Biberach",
     "url": "https://github.com/symcon/syncmysql",
     "compatibility": {
         "version": "5.5"
