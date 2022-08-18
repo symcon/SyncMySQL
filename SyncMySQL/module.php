@@ -1056,7 +1056,11 @@ class SyncMySQL extends IPSModule
             $timestamp = time();
         }
         mysqli_stmt_bind_param($stmt, 'sssii', $meterNumber, $meterBKS, $meterDescription, $timestamp, $linkedID);
-        mysqli_stmt_execute($stmt);
+        $execute = mysqli_stmt_execute($stmt);
+        if (!$execute) {
+            throw new Exception(mysqli_error($db));
+        }
+
         mysqli_stmt_close($stmt);
 
         return mysqli_insert_id($db);
