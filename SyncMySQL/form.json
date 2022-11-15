@@ -200,6 +200,10 @@
                                 "value": "kW"
                             },
                             {
+                                "caption": "mA",
+                                "value": "mA"
+                            },
+                            {
                                 "caption": "A",
                                 "value": "A"
                             },
@@ -238,6 +242,10 @@
                             {
                                 "caption": "m/s",
                                 "value": "m/s"
+                            },
+                            {
+                                "caption": "1/s",
+                                "value": "1/s"
                             },
                             {
                                 "caption": "mm",
