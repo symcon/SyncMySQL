@@ -250,6 +250,18 @@
                             {
                                 "caption": "mm",
                                 "value": "mm"
+                            },
+                            {
+                                "caption": "%",
+                                "value": "%"
+                            },
+                            {
+                                "caption": "VA",
+                                "value": "VA"
+                            },
+                            {
+                                "caption": "pr",
+                                "value": "pr"
                             }
                         ]
                     }
