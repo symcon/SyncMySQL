@@ -734,9 +734,13 @@ class SyncMySQL extends IPSModule
                 continue;
             }
 
+            //Workaround for MySQL which reduces int(11) to int
+            if ($tableColumn['Type'] == 'int') {
+                $tableColumn['Type'] = 'int(11)';
+            }
+
             //Update field type
             if ($column['Type'] != $tableColumn['Type']) {
-                $this->SendDebug('DEBUG', 'Current table: ' . print_r($tableColumn, true), 0);
                 $this->SendDebug('MIGRATE', 'Change type: ' . $tableColumn['Field'] . ' from ' . $tableColumn['Type'] . ' to ' . $column['Type'], 0);
                 if (!@mysqli_query($db, sprintf('ALTER TABLE %s CHANGE %s %s %s %s %s', $name, $tableColumn['Field'], $tableColumn['Field'], $column['Type'], ((!isset($column['Null']) || $column['Null']) == 'NO' ? 'NOT NULL' : 'NULL'), (isset($column['Extra']) ? $column['Extra'] : '')))) {
                     throw new Exception(mysqli_error($db));
