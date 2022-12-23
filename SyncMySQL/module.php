@@ -736,7 +736,7 @@ class SyncMySQL extends IPSModule
 
             //Update field type
             if ($column['Type'] != $tableColumn['Type']) {
-                $this->SendDebug('MIGRATE', 'Change type: ' . $tableColumn['Field'] . ' from ' . $column['Type'] . ' to ' . $tableColumn['Type'], 0);
+                $this->SendDebug('MIGRATE', 'Change type: ' . $tableColumn['Field'] . ' from ' . $tableColumn['Type'] . ' to ' . $column['Type'], 0);
                 if (!@mysqli_query($db, sprintf('ALTER TABLE %s CHANGE %s %s %s %s %s', $name, $tableColumn['Field'], $tableColumn['Field'], $column['Type'], ((!isset($column['Null']) || $column['Null']) == 'NO' ? 'NOT NULL' : 'NULL'), (isset($column['Extra']) ? $column['Extra'] : '')))) {
                     throw new Exception(mysqli_error($db));
                 }
