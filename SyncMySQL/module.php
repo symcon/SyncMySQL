@@ -866,7 +866,7 @@ class SyncMySQL extends IPSModule
 
     private function dbFetchIdentListWithLastData($db)
     {
-        $rows = @mysqli_query($db, 'SELECT ident.*, MAX(timestamp) as timestamp FROM ident JOIN data WHERE ident.id = data.identid GROUP BY ident.id');
+        $rows = @mysqli_query($db, 'SELECT ident.*, MAX(timestamp) as timestamp FROM ident LEFT JOIN data ON ident.id = data.identid GROUP BY ident.id');
         if (!$rows) {
             throw new Exception(mysqli_error($db));
         }
