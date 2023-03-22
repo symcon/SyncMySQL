@@ -5,10 +5,10 @@ declare(strict_types=1);
 class SyncMySQL extends IPSModule
 {
     //RegEx for validation of format
-    //https://regex101.com/r/YwBrc0/1
+    //https://regex101.com/r/vP6TqD/1
     private $identFormats = [
         '', //Custom
-        "^([A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)=([0-9]+)\+([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([0-9]+)([A-Z])([0-9]+)\/([A-Z]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)$"
+        "^([A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)=([0-9]+)\+([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_0-9]+)([_A-Z])([_0-9]+)\/([A-Z]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)$"
     ];
 
     //https://regex101.com/r/peWokG/1
