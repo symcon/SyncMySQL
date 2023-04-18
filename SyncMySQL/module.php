@@ -194,6 +194,10 @@ class SyncMySQL extends IPSModule
         [
             'Field' => 'description',
             'Type'  => 'varchar(100)'
+        ],
+        [
+            'Field' => 'comment',
+            'Type'  => 'varchar(100)'
         ]
     ];
 
@@ -475,7 +479,7 @@ class SyncMySQL extends IPSModule
         $this->UpdateArchive();
     }
 
-    public function AddMeter(string $MeterNumber, string $MeterBKS, string $MeterDescription)
+    public function AddMeter(string $MeterNumber, string $MeterBKS, string $MeterDescription, string $MeterComment)
     {
         //Only create a new meter if there is a new number
         if ($MeterNumber == '' || $MeterBKS == '' || $MeterDescription == '') {
@@ -489,7 +493,7 @@ class SyncMySQL extends IPSModule
             echo $this->Translate('The meter number already exists');
             return;
         }
-        $this->dbAddMeter($db, $MeterNumber, $MeterBKS, $MeterDescription, 0);
+        $this->dbAddMeter($db, $MeterNumber, $MeterBKS, $MeterDescription, $MeterComment, 0);
         //Update content of all meter selects
         $this->updateMeterSelect();
 
@@ -497,11 +501,12 @@ class SyncMySQL extends IPSModule
         $this->UpdateFormfield('NewMeterNumber', 'value', '');
         $this->UpdateFormfield('NewMeterBKS', 'value', '');
         $this->UpdateFormfield('NewMeterDescription', 'value', '');
+        $this->UpdateFormfield('NewMeterComment', 'value', '');
 
         echo $this->Translate('Meter created');
     }
 
-    public function ReplaceMeter(int $MeterID, string $NewMeterNumber, string $NewMeterBKS, string $NewMeterDescription)
+    public function ReplaceMeter(int $MeterID, string $NewMeterNumber, string $NewMeterBKS, string $NewMeterDescription, string $NewMeterComment)
     {
         //Only continue if we have a valid MeterID
         if ($MeterID == -1) {
@@ -511,8 +516,8 @@ class SyncMySQL extends IPSModule
 
         //Add old meter as a new entry which is linked to the original MeterID
         $oldMeter = $this->dbFetchMeter($db, $MeterID);
-        $this->dbAddMeter($db, $oldMeter['meter_number'], $oldMeter['bks'], $oldMeter['description'], $MeterID, $oldMeter['timestamp']);
-        $this->dbUpdateMeter($db, $MeterID, $NewMeterNumber, $NewMeterBKS, $NewMeterDescription);
+        $this->dbAddMeter($db, $oldMeter['meter_number'], $oldMeter['bks'], $oldMeter['description'], $oldMeter['comment'], $MeterID, $oldMeter['timestamp']);
+        $this->dbUpdateMeter($db, $MeterID, $NewMeterNumber, $NewMeterBKS, $NewMeterDescription, $NewMeterComment);
         //Update content of all meter selects
         $this->updateMeterSelect();
         echo $this->Translate('Meter replaced');
@@ -529,7 +534,8 @@ class SyncMySQL extends IPSModule
         $meter = $this->dbFetchMeter($db, $MeterID);
         $history = [[
             'Timestamp'   => date('d.m.Y H:i:s', $meter['timestamp']),
-            'MeterNumber' => $meter['meter_number']
+            'MeterNumber' => $meter['meter_number'],
+            'Comment' => $meter['comment']
         ]];
 
         $data = $this->dbFetchMeterHistory($db, $MeterID);
@@ -537,7 +543,8 @@ class SyncMySQL extends IPSModule
             $history[] =
             [
                 'Timestamp'   => date('d.m.Y H:i:s', $entry['timestamp']),
-                'MeterNumber' => $entry['meter_number']
+                'MeterNumber' => $entry['meter_number'],
+                'Comment' => $meter['comment']
             ];
         }
         $this->UpdateFormfield('MeterHistory', 'values', json_encode($history));
@@ -1077,31 +1084,31 @@ class SyncMySQL extends IPSModule
         return $result;
     }
 
-    private function dbAddMeter($db, $meterNumber, $meterBKS, $meterDescription, $linkedID, $timestamp = 0)
+    private function dbAddMeter($db, $meterNumber, $meterBKS, $meterDescription, $meterComment, $linkedID, $timestamp = 0)
     {
-        $stmt = mysqli_prepare($db, 'INSERT INTO meter (meter_number, bks, description, timestamp, linkedid) VALUES (?, ?, ?, ?, ?)');
+        $stmt = mysqli_prepare($db, 'INSERT INTO meter (meter_number, bks, description, comment, timestamp, linkedid) VALUES (?, ?, ?, ?, ?, ?)');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
         if ($timestamp == 0) {
             $timestamp = time();
         }
-        mysqli_stmt_bind_param($stmt, 'sssii', $meterNumber, $meterBKS, $meterDescription, $timestamp, $linkedID);
+        mysqli_stmt_bind_param($stmt, 'ssssii', $meterNumber, $meterBKS, $meterDescription, $meterComment, $timestamp, $linkedID);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
         return mysqli_insert_id($db);
     }
 
-    private function dbUpdateMeter($db, $meterID, $meterNumber, $meterBKS, $meterDescription)
+    private function dbUpdateMeter($db, $meterID, $meterNumber, $meterBKS, $meterDescription, $meterComment)
     {
-        $stmt = mysqli_prepare($db, 'UPDATE meter SET meter_number = ?, bks = ?, description = ?, timestamp = ? WHERE id = ?');
+        $stmt = mysqli_prepare($db, 'UPDATE meter SET meter_number = ?, bks = ?, description = ?, comment = ?, timestamp = ? WHERE id = ?');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
 
         $timestamp = time();
-        mysqli_stmt_bind_param($stmt, 'sssii', $meterNumber, $meterBKS, $meterDescription, $timestamp, $meterID);
+        mysqli_stmt_bind_param($stmt, 'ssssii', $meterNumber, $meterBKS, $meterDescription, $meterComment, $timestamp, $meterID);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
@@ -1127,7 +1134,7 @@ class SyncMySQL extends IPSModule
         }
         mysqli_stmt_bind_param($stmt, 'i', $meterID);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $id, $meterNumber, $timestamp, $linkedid, $bks, $description);
+        mysqli_stmt_bind_result($stmt, $id, $meterNumber, $timestamp, $linkedid, $bks, $description, $comment);
 
         $result = [];
         while ($rows = mysqli_stmt_fetch($stmt)) {
@@ -1136,7 +1143,8 @@ class SyncMySQL extends IPSModule
                 'timestamp'    => $timestamp,
                 'linkedid'     => $linkedid,
                 'bks'          => $bks,
-                'description'  => $description
+                'description'  => $description,
+                'comment'      => $comment
             ];
         }
         return $result;
@@ -1163,20 +1171,21 @@ class SyncMySQL extends IPSModule
 
     private function dbFetchMeterHistory($db, $meterID)
     {
-        $stmt = mysqli_prepare($db, 'SELECT id, meter_number, timestamp, linkedid FROM meter WHERE linkedid = ? ORDER BY timestamp DESC');
+        $stmt = mysqli_prepare($db, 'SELECT id, meter_number, timestamp, linkedid, comment FROM meter WHERE linkedid = ? ORDER BY timestamp DESC');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
         mysqli_stmt_bind_param($stmt, 'i', $meterID);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $id, $meterNumber, $timestamp, $linkedid);
+        mysqli_stmt_bind_result($stmt, $id, $meterNumber, $timestamp, $linkedid, $comment);
 
         $result = [];
         while ($rows = mysqli_stmt_fetch($stmt)) {
             $result[] = [
                 'meter_number' => $meterNumber,
                 'timestamp'    => $timestamp,
-                'linkedid'     => $linkedid
+                'linkedid'     => $linkedid,
+                'comment'      => $comment,
             ];
         }
         return $result;
