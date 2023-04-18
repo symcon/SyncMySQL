@@ -233,9 +233,16 @@ class SyncMySQL extends IPSModule
         ]
     ];
 
+    public function  __construct($InstanceID)
+    {
+        //Never delete this line!
+        parent::__construct($InstanceID);
+
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    }
+
     public function Create()
     {
-
         //Never delete this line!
         parent::Create();
 
@@ -255,7 +262,6 @@ class SyncMySQL extends IPSModule
 
     public function ApplyChanges()
     {
-
         //Never delete this line!
         parent::ApplyChanges();
 
@@ -894,11 +900,7 @@ class SyncMySQL extends IPSModule
         }
 
         mysqli_stmt_bind_param($stmt, 'iiissisissi', $active, $variableID, $aggregationType, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description, $identid);
-        $execute = mysqli_stmt_execute($stmt);
-        if (!$execute) {
-            throw new Exception(mysqli_error($db));
-        }
-
+        mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
 
@@ -1000,11 +1002,7 @@ class SyncMySQL extends IPSModule
         }
 
         mysqli_stmt_bind_param($stmt, 'siissssi', $location, $area, $netArea, $economicUnit, $buildingUnit, $buildingAssignment, $constructionDate, $zoneID);
-        $execute = mysqli_stmt_execute($stmt);
-        if (!$execute) {
-            throw new Exception(mysqli_error($db));
-        }
-
+        mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
 
@@ -1056,11 +1054,7 @@ class SyncMySQL extends IPSModule
             $timestamp = time();
         }
         mysqli_stmt_bind_param($stmt, 'sssii', $meterNumber, $meterBKS, $meterDescription, $timestamp, $linkedID);
-        $execute = mysqli_stmt_execute($stmt);
-        if (!$execute) {
-            throw new Exception(mysqli_error($db));
-        }
-
+        mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
         return mysqli_insert_id($db);
@@ -1075,11 +1069,7 @@ class SyncMySQL extends IPSModule
 
         $timestamp = time();
         mysqli_stmt_bind_param($stmt, 'sssii', $meterNumber, $meterBKS, $meterDescription, $timestamp, $meterID);
-        $execute = mysqli_stmt_execute($stmt);
-        if (!$execute) {
-            throw new Exception(mysqli_error($db));
-        }
-
+        mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
 
