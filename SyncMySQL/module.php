@@ -891,7 +891,7 @@ class SyncMySQL extends IPSModule
         return $result;
     }
 
-    public function dbCheckIdent($db, string $ident, int $identid = 0)
+    private function dbCheckIdent($db, string $ident, int $identid = 0)
     {
         //Make Precheck if ident is unique
         if ($identid == 0) {
@@ -1357,7 +1357,7 @@ class SyncMySQL extends IPSModule
         usort($options, function($a, $b) {
             return strcmp($a['caption'], $b['caption']);
         });
-        
+
         return $options;
     }
 
