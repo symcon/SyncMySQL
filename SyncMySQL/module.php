@@ -240,7 +240,7 @@ class SyncMySQL extends IPSModule
         parent::Create();
 
         $this->RegisterPropertyBoolean('Active', false);
-        $this->RegisterPropertyString('Host', 'www.webfront.info');
+        $this->RegisterPropertyString('Host', '');
         $this->RegisterPropertyInteger('Port', 3306);
         $this->RegisterPropertyString('Username', 'root');
         $this->RegisterPropertyString('Password', '');
