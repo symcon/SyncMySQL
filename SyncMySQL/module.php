@@ -237,7 +237,7 @@ class SyncMySQL extends IPSModule
         ]
     ];
 
-    public function  __construct($InstanceID)
+    public function __construct($InstanceID)
     {
         //Never delete this line!
         parent::__construct($InstanceID);
@@ -535,7 +535,7 @@ class SyncMySQL extends IPSModule
         $history = [[
             'Timestamp'   => date('d.m.Y H:i:s', $meter['timestamp']),
             'MeterNumber' => $meter['meter_number'],
-            'Comment' => $meter['comment']
+            'Comment'     => $meter['comment']
         ]];
 
         $data = $this->dbFetchMeterHistory($db, $MeterID);
@@ -544,7 +544,7 @@ class SyncMySQL extends IPSModule
             [
                 'Timestamp'   => date('d.m.Y H:i:s', $entry['timestamp']),
                 'MeterNumber' => $entry['meter_number'],
-                'Comment' => $meter['comment']
+                'Comment'     => $meter['comment']
             ];
         }
         $this->UpdateFormfield('MeterHistory', 'values', json_encode($history));
@@ -900,8 +900,7 @@ class SyncMySQL extends IPSModule
                 throw new Exception(mysqli_error($db));
             }
             mysqli_stmt_bind_param($stmt, 's', $ident);
-        }
-        else {
+        } else {
             $stmt = mysqli_prepare($db, 'SELECT * FROM ident WHERE ident = ? AND id != ?');
             if (!$stmt) {
                 throw new Exception(mysqli_error($db));
@@ -1354,7 +1353,8 @@ class SyncMySQL extends IPSModule
             ];
         }
 
-        usort($options, function($a, $b) {
+        usort($options, function ($a, $b)
+        {
             return strcmp($a['caption'], $b['caption']);
         });
 
@@ -1374,7 +1374,8 @@ class SyncMySQL extends IPSModule
             ];
         }
 
-        usort($options, function($a, $b) {
+        usort($options, function ($a, $b)
+        {
             return strcmp($a['caption'], $b['caption']);
         });
 
