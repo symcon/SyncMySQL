@@ -412,6 +412,9 @@ class SyncMySQL extends IPSModule
     public function IdentAdd(bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterid, string $tariff, int $zoneid, string $usageType, string $description)
     {
         $db = $this->dbConnect();
+
+        $this->dbCheckIdent($db, $ident);
+
         $identid = $this->dbAddIdent($db, $active, $variableid, $aggregationtype, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description);
 
         //Only add format if selected
@@ -432,6 +435,9 @@ class SyncMySQL extends IPSModule
     public function IdentUpdate(int $identid, bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterID, string $tariff, int $zoneID, string $usageType, string $description)
     {
         $db = $this->dbConnect();
+
+        $this->dbCheckIdent($db, $ident, $identid);
+
         $this->dbUpdateIdent($db, $identid, $active, $variableid, $aggregationtype, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description);
 
         //Only update format if selected
@@ -876,6 +882,33 @@ class SyncMySQL extends IPSModule
             $result[] = $row;
         }
         return $result;
+    }
+
+    public function dbCheckIdent($db, string $ident, int $identid = 0)
+    {
+        //Make Precheck if ident is unique
+        if ($identid == 0) {
+            $stmt = mysqli_prepare($db, 'SELECT * FROM ident WHERE ident = ?');
+            if (!$stmt) {
+                throw new Exception(mysqli_error($db));
+            }
+            mysqli_stmt_bind_param($stmt, 's', $ident);
+        }
+        else {
+            $stmt = mysqli_prepare($db, 'SELECT * FROM ident WHERE ident = ? AND id != ?');
+            if (!$stmt) {
+                throw new Exception(mysqli_error($db));
+            }
+            mysqli_stmt_bind_param($stmt, 'si', $ident, $identid);
+        }
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+            throw new Exception('Ident has to be unique');
+        }
+
+        mysqli_stmt_close($stmt);
     }
 
     private function dbAddIdent($db, $active, $variableID, $aggregationType, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description)
