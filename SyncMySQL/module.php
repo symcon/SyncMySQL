@@ -1354,6 +1354,10 @@ class SyncMySQL extends IPSModule
             ];
         }
 
+        usort($options, function($a, $b) {
+            return strcmp($a['caption'], $b['caption']);
+        });
+        
         return $options;
     }
 
@@ -1369,6 +1373,10 @@ class SyncMySQL extends IPSModule
                 'value'   => intval($meter['id'])
             ];
         }
+
+        usort($options, function($a, $b) {
+            return strcmp($a['caption'], $b['caption']);
+        });
 
         return $options;
     }
