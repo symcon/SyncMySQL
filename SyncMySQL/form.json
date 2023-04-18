@@ -373,9 +373,14 @@
                                         "caption": "Description"
                                     },
                                     {
+                                        "type": "ValidationTextBox",
+                                        "name": "NewMeterComment",
+                                        "caption": "Comment"
+                                    },
+                                    {
                                         "type": "Button",
                                         "caption": "Create New",
-                                        "onClick": "SSQL_AddMeter($id, $NewMeterNumber, $NewMeterBKS, $NewMeterDescription);"
+                                        "onClick": "SSQL_AddMeter($id, $NewMeterNumber, $NewMeterBKS, $NewMeterDescription, $NewMeterComment);"
                                     }
                                 ]
                             },
@@ -407,9 +412,14 @@
                                         "caption": "Description"
                                     },
                                     {
+                                        "type": "ValidationTextBox",
+                                        "name": "ReplaceMeterComment",
+                                        "caption": "Comment"
+                                    },
+                                    {
                                         "type": "Button",
                                         "caption": "Replace",
-                                        "onClick": "SSQL_ReplaceMeter($id, $EditMeter, $ReplaceMeterNumber, $ReplaceMeterBKS, $ReplaceMeterDescription);"
+                                        "onClick": "SSQL_ReplaceMeter($id, $EditMeter, $ReplaceMeterNumber, $ReplaceMeterBKS, $ReplaceMeterDescription, $ReplaceMeterComment);"
                                     }
                                 ]
                             },
@@ -436,6 +446,11 @@
                                             {
                                                 "caption": "Meter Number",
                                                 "name": "MeterNumber",
+                                                "width": "150px"
+                                            },
+                                            {
+                                                "caption": "Comment",
+                                                "name": "Comment",
                                                 "width": "auto"
                                             }
                                         ]

@@ -64,7 +64,8 @@
             "Meter replaced": "Zähler wurde ersetzt",
             "Zone created": "Bereich wurde erstellt",
             "Zone saved": "Bereich wurde gespeichert",
-            "The meter number already exists": "Die Zählernummer existiert bereits"
+            "The meter number already exists": "Die Zählernummer existiert bereits",
+            "Comment": "Bemerkung"
         }
     }
 }
