@@ -11,10 +11,10 @@ class SyncMySQL extends IPSModule
         "^([A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)=([0-9]+)\+([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([0-9]+)([A-Z])([0-9]+)\/([A-Z]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)-([_A-Za-z0-9]*)$"
     ];
 
-    //https://regex101.com/r/peWokG/1
+    //https://regex101.com/r/peWokG/2
     private $bksFormats = [
         '', //Custom
-        "^([A-Za-z0-9]+)-([_A-Za-z0-9]+)-([A-Z0-9]+)-([A-Za-z0-9]+)=([0-9]+)\+([A-Za-z0-9]+)-([A-Za-z0-9]+)-([0-9]+)([A-Z])([0-9]+)$"
+        "^([A-Za-z0-9]+)-([_A-Za-z0-9]+)-([_A-Z0-9]+)-([_A-Za-z0-9]+)=([0-9]+)\+([_A-Za-z0-9]+)-([_A-Za-z0-9]+)-([0-9]+)([A-Z])([0-9]+)$"
     ];
 
     private $tableIdent = [
