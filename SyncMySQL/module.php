@@ -1065,7 +1065,7 @@ class SyncMySQL extends IPSModule
 
     private function dbFetchZone($db, $zoneID)
     {
-        $stmt = mysqli_prepare($db, 'SELECT * FROM zone WHERE id = ?');
+        $stmt = mysqli_prepare($db, 'SELECT id, location, area, net_area, economic_unit, building_unit, building_assignment, construction_date FROM zone WHERE id = ?');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
@@ -1132,7 +1132,7 @@ class SyncMySQL extends IPSModule
 
     private function dbFetchMeter($db, $meterID)
     {
-        $stmt = mysqli_prepare($db, 'SELECT * FROM meter WHERE id = ?');
+        $stmt = mysqli_prepare($db, 'SELECT id, meter_number, timestamp, linkedid, bks, description, comment FROM meter WHERE id = ?');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
