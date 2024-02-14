@@ -188,11 +188,15 @@
                                 "value": "K"
                             },
                             {
+                                "caption": "Wh",
+                                "value": "Wh"
+                            },
+                            {
                                 "caption": "kWh",
                                 "value": "kWh"
                             },
                             {
-                                "caption": "Wh",
+                                "caption": "MWh",
                                 "value": "MWh"
                             },
                             {
@@ -202,6 +206,10 @@
                             {
                                 "caption": "kW",
                                 "value": "kW"
+                            },
+                            {
+                                "caption": "MW",
+                                "value": "MW"
                             },
                             {
                                 "caption": "mA",
