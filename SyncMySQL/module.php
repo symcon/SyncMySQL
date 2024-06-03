@@ -63,6 +63,10 @@ class SyncMySQL extends IPSModule
             'Field' => 'description',
             'Type'  => 'text'
         ],
+        [
+            'Field' => 'ident_legacy',
+            'Type'  => 'varchar(100)'
+        ],
     ];
 
     private $tableData = [
@@ -413,13 +417,13 @@ class SyncMySQL extends IPSModule
         }
     }
 
-    public function IdentAdd(bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterid, string $tariff, int $zoneid, string $usageType, string $description)
+    public function IdentAdd(bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterid, string $tariff, int $zoneid, string $usageType, string $description, string $ident_legacy)
     {
         $db = $this->dbConnect();
 
         $this->dbCheckIdent($db, $ident);
 
-        $identid = $this->dbAddIdent($db, $active, $variableid, $aggregationtype, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description);
+        $identid = $this->dbAddIdent($db, $active, $variableid, $aggregationtype, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description, $ident_legacy);
 
         //Only add format if selected
         if ($this->ReadPropertyInteger('Format') > 0) {
@@ -436,13 +440,13 @@ class SyncMySQL extends IPSModule
         $this->UpdateArchive();
     }
 
-    public function IdentUpdate(int $identid, bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterID, string $tariff, int $zoneID, string $usageType, string $description)
+    public function IdentUpdate(int $identid, bool $active, int $variableid, int $aggregationtype, string $ident, string $unit, int $meterID, string $tariff, int $zoneID, string $usageType, string $description, string $ident_legacy)
     {
         $db = $this->dbConnect();
 
         $this->dbCheckIdent($db, $ident, $identid);
 
-        $this->dbUpdateIdent($db, $identid, $active, $variableid, $aggregationtype, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description);
+        $this->dbUpdateIdent($db, $identid, $active, $variableid, $aggregationtype, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description, $ident_legacy);
 
         //Only update format if selected
         if ($this->ReadPropertyInteger('Format') > 0) {
@@ -922,28 +926,28 @@ class SyncMySQL extends IPSModule
         mysqli_stmt_close($stmt);
     }
 
-    private function dbAddIdent($db, $active, $variableID, $aggregationType, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description)
+    private function dbAddIdent($db, $active, $variableID, $aggregationType, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description, $ident_legacy)
     {
-        $stmt = mysqli_prepare($db, 'INSERT INTO ident (active, variableid, aggregationtype, ident, unit, meterid, tariff, zoneid, usage_type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt = mysqli_prepare($db, 'INSERT INTO ident (active, variableid, aggregationtype, ident, unit, meterid, tariff, zoneid, usage_type, description, ident_legacy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
 
-        mysqli_stmt_bind_param($stmt, 'iiissisiss', $active, $variableID, $aggregationType, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description);
+        mysqli_stmt_bind_param($stmt, 'iiissisisss', $active, $variableID, $aggregationType, $ident, $unit, $meterid, $tariff, $zoneid, $usageType, $description, $ident_legacy);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
         return mysqli_insert_id($db);
     }
 
-    private function dbUpdateIdent($db, $identid, $active, $variableID, $aggregationType, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description)
+    private function dbUpdateIdent($db, $identid, $active, $variableID, $aggregationType, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description, $ident_legacy)
     {
-        $stmt = mysqli_prepare($db, 'UPDATE ident SET active = ?, variableid = ?, aggregationtype = ?, ident = ?, unit = ?, meterid = ?, tariff = ?, zoneid  = ?, usage_type = ?, description = ? WHERE id = ?');
+        $stmt = mysqli_prepare($db, 'UPDATE ident SET active = ?, variableid = ?, aggregationtype = ?, ident = ?, unit = ?, meterid = ?, tariff = ?, zoneid  = ?, usage_type = ?, description = ?, ident_legacy = ? WHERE id = ?');
         if (!$stmt) {
             throw new Exception(mysqli_error($db));
         }
 
-        mysqli_stmt_bind_param($stmt, 'iiissisissi', $active, $variableID, $aggregationType, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description, $identid);
+        mysqli_stmt_bind_param($stmt, 'iiissisisssi', $active, $variableID, $aggregationType, $ident, $unit, $meterID, $tariff, $zoneID, $usageType, $description, $ident_legacy, $identid);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
@@ -1262,6 +1266,7 @@ class SyncMySQL extends IPSModule
                     'ZoneID'          => intval($ident['zoneid']),
                     'UsageType'       => $ident['usage_type'],
                     'Description'     => $ident['description'],
+                    'IdentLegacy'     => $ident['ident_legacy'],
                     'Ident'           => $ident['ident'],
                     'State'           => $state
                 ];

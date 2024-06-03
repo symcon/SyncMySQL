@@ -111,8 +111,8 @@
                 "column": "Ident",
                 "direction": "ascending"
             },
-            "onAdd": "SSQL_IdentAdd($id, $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description']);",
-            "onEdit": "SSQL_IdentUpdate($id, $IdentList['IdentID'], $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description']);",
+            "onAdd": "SSQL_IdentAdd($id, $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description'], $IdentList['IdentLegacy']);",
+            "onEdit": "SSQL_IdentUpdate($id, $IdentList['IdentID'], $IdentList['Active'], $IdentList['VariableID'], $IdentList['AggregationType'], $IdentList['Ident'], $IdentList['Unit'], $IdentList['MeterID'], $IdentList['Tariff'], $IdentList['ZoneID'], $IdentList['UsageType'], $IdentList['Description'], $IdentList['IdentLegacy']);",
             "onDelete": "SSQL_IdentDelete($id, $IdentList['IdentID']);",
             "columns": [
                 {
@@ -327,6 +327,16 @@
                     "edit": {
                         "type": "ValidationTextBox",
                         "validate": "^.{0,100}$"
+                    }
+                },
+                {
+                    "caption": "Identification (Legacy)",
+                    "name": "IdentLegacy",
+                    "width": "400px",
+                    "visible": false,
+                    "add": "",
+                    "edit": {
+                        "type": "ValidationTextBox"
                     }
                 },
                 {
