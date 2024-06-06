@@ -20,7 +20,7 @@
             "Aggregation Type": "Aggregationstyp",
             "Average": "Durchschnitt",
             "Counter": "Zähler",
-            "Identification": "Identifikator",
+            "Identification": "Kennzeichnung",
             "State": "Status",
             "New!": "Neu!",
             "Database is active and properly configured": "Datenbank ist aktiv und korrekt konfiguriert",
@@ -66,7 +66,7 @@
             "Zone saved": "Bereich wurde gespeichert",
             "The meter number already exists": "Die Zählernummer existiert bereits",
             "Comment": "Bemerkung",
-            "Identification (Legacy)": "Identifikator (Bestand)"
+            "Identification (Legacy)": "Bestandskennzeichnung"
         }
     }
 }
