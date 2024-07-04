@@ -232,6 +232,10 @@
                                 "value": "%rf"
                             },
                             {
+                                "caption": "l",
+                                "value": "l"
+                            },
+                            {
                                 "caption": "m³",
                                 "value": "m³"
                             },
