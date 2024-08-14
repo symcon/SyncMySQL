@@ -137,7 +137,8 @@
                     "add": "",
                     "edit": {
                         "type": "ValidationTextBox"
-                    }
+                    },
+                    "quickFilter": true
                 },
                 {
                     "caption": "Aggregation Type",
